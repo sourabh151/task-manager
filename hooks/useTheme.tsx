@@ -99,9 +99,11 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
             if (value) {
                 setIsDarkMode(JSON.parse(value));
             }
-        }, [])
-    });
+            // return null; // Ensure a return value
+        });
+    }, []);
     const toggleDarkMode = (isDark: boolean) => {
+        AsyncStorage.setItem('darkMode', JSON.stringify(isDark));
         setIsDarkMode(isDark);
     };
     const colors = isDarkMode ? darkColors : lightColors;
@@ -110,4 +112,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
             {children}
         </ThemeContext.Provider>
     );
+}
+
+export const useTheme = () => {
+    const context = React.useContext(ThemeContext);
+    if (context === undefined) {
+        throw new Error("useTheme must be used within a ThemeProvider");
+    }
+    return context;
 }
