@@ -1,12 +1,26 @@
+import { useTheme } from '@/hooks/useTheme'
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 
-const index = () => {
-    return (
-        <View style={{ padding: 20 }}>
-            <Text style={{ paddingTop: 40 }}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse maiores consequuntur iste, ullam ea natus culpa, voluptatem eos, assumenda repellat ex obcaecati aspernatur molestias enim. Delectus nulla voluptatum quo esse!</Text>
-        </View>
-    )
+const Index = () => {
+  const { colors, toggleDarkMode } = useTheme()
+  return (
+    <View style={{
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: colors.bg
+    }}>
+      <Text style={{ paddingTop: 40, color: colors.text }}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</Text>
+      <TouchableOpacity>
+        <Text onPress={() => {
+          toggleDarkMode()
+        }}>
+          change theme
+        </Text>
+      </TouchableOpacity>
+    </View>
+  )
 }
 
-export default index
+export default Index
