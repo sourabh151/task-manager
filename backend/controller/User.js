@@ -71,4 +71,18 @@ const deleteTask = async (req, res) => {
   }
 };
 
-module.exports = { getUserTasks, postTask, updateTask, deleteTask };
+const deleteAllTasks = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.query.email })
+    if (user === null) {
+      return res.status(404).json({ message: "cannot find user" })
+    }
+    user.tasks = [];
+    await user.save();
+    res.json({ message: "Deleted All Tasks" })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+module.exports = { getUserTasks, postTask, updateTask, deleteTask, deleteAllTasks };
