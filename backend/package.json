@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "chai": "^4.3.0",

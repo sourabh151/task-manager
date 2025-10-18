@@ -53,8 +53,7 @@ const updateTask = async (req, res) => {
 };
 
 const deleteTask = async (req, res) => {
-  console.log(req.body)
-  const { taskId } = req.body;
+  const { taskId } = req.params;
   try {
     const user = await User.findOne({ email: req.query.email });
     if (user == null) {
