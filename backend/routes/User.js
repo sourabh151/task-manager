@@ -1,7 +1,19 @@
-const express = require("express")
-const { postUser, getUserTasks } = require("../controller/User")
+const express = require("express");
+const {
+  getUserTasks,
+  postTask,
+  updateTask,
+  deleteTask,
+} = require("../controller/User");
 
-const router = express.Router()
+const router = express.Router();
 
-router.post("/", postUser)
-module.exports = router
+router.get("/tasks", getUserTasks);
+
+router.post("/tasks", postTask);
+
+router.patch("/tasks", updateTask);
+
+router.delete("/tasks", deleteTask);
+
+module.exports = router;
