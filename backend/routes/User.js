@@ -4,7 +4,7 @@ const {
   postTask,
   updateTask,
   deleteTask,
-} = require("../controller/User");
+} = require("../controller/User.ts");
 
 const router = express.Router();
 

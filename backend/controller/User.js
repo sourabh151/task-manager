@@ -14,11 +14,11 @@ const getUserTasks = async (req, res) => {
 };
 
 const postTask = async (req, res) => {
-  const { email, name, completed } = req.body;
+  const { name, completed } = req.body;
   try {
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email: req.query.email });
     if (user == null) {
-      user = await User.create({ email, tasks: [] });
+      user = await User.create({ email: req.query.email, tasks: [] });
     }
     user.tasks.push({ name, completed });
     await user.save();
@@ -29,9 +29,9 @@ const postTask = async (req, res) => {
 };
 
 const updateTask = async (req, res) => {
-  const { email, taskId, name, completed } = req.body;
+  const { taskId, name, completed } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: req.query.email });
     if (user == null) {
       return res.status(404).json({ message: 'Cannot find user' });
     }
@@ -54,9 +54,9 @@ const updateTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   console.log(req.body)
-  const { email, taskId } = req.body;
+  const { taskId } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: req.query.email });
     if (user == null) {
       return res.status(404).json({ message: 'Cannot find user' });
     }
