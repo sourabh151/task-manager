@@ -1,52 +1,49 @@
+import { createHomeStyles } from '@/assets/styles/home.styles'
 import { useTasks } from '@/hooks/useData'
-import { ColorScheme, useTheme } from '@/hooks/useTheme'
+import { useTheme } from '@/hooks/useTheme'
+import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 
 
 const Index = () => {
-  const { colors, toggleDarkMode } = useTheme()
-  const { tasks, getAllTasks, addTask } = useTasks();
+    const { colors, toggleDarkMode } = useTheme()
+    const { tasks, getAllTasks, addTask } = useTasks();
 
-  const styles = getStyles(colors)
+    const styles = createHomeStyles(colors);
 
-  useEffect(() => {
-    getAllTasks()
-  }, [])
+    useEffect(() => {
+        getAllTasks()
+    }, [])
 
 
-  return (
-    <View style={styles.container}>
-      <Text style={{ paddingTop: 40, color: colors.text }}>
-        {tasks[0]?.name}
-      </Text>
-      <TouchableOpacity>
-        <Text onPress={() => {
-          toggleDarkMode()
-        }}>
-          change theme
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Text onPress={() => {
-          addTask("New Task from index")
-        }}>
-          add task
-        </Text>
-      </TouchableOpacity>
-    </View>
-  )
+    return (
+        <LinearGradient
+            colors={colors.gradients.background}>
+            <SafeAreaView style={styles.safeArea}>
+                <Text style={{ paddingTop: 40, color: colors.text }}>
+                    {tasks[0]?.name}
+                </Text>
+                <TouchableOpacity style={styles.title}>
+                    <Text onPress={() => {
+                        toggleDarkMode()
+                    }}>
+                        change theme
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <Text onPress={() => {
+                        addTask("New Task from index")
+                    }}>
+                        add task
+                    </Text>
+                </TouchableOpacity>
+            </SafeAreaView>
+        </LinearGradient>
+    )
 }
-const getStyles = (colors: ColorScheme) => {
-  return StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: colors.bg
-    }
-  })
-}
+
 
 export default Index
