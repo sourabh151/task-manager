@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
 import React from 'react'
 import { useTheme } from "@/hooks/useTheme"
+import { StatusBar } from "react-native";
 
 const LayoutComponent = () => {
   const { colors } = useTheme()
@@ -21,7 +22,7 @@ const LayoutComponent = () => {
           fontSize: 12,
           fontWeight: '600',
         }, headerShown: false,
-        animation:"shift"
+        animation: "shift"
       }}
     >
       <Tabs.Screen name="index" options={{
