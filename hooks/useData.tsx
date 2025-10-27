@@ -14,6 +14,7 @@ type TaskContextType = {
   updateTask: (taskId: string, name?: string, completed?: boolean) => void;
   deleteTask: (taskId: string) => void;
   setEmail: (email: string) => void;
+  isLoading: boolean
 };
 
 // Create the context
@@ -23,6 +24,8 @@ const TaskContext = createContext<TaskContextType | {}>({});
 export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [email, setEmail] = useState('sourabh')
+  const [isLoading, setIsLoading] = useState(true);
+
 
   const getAllTasks = () => {
     fetch(`https://task-manager-uizw.onrender.com/api/v1/users/tasks?email=${email}`)
@@ -34,6 +37,7 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       })
       .then((data) => {
         setTasks(data)
+        setIsLoading(false)
       })
       .catch((error) => console.error("Fetch error:", error));
   }
@@ -95,7 +99,7 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, getAllTasks, addTask, updateTask, deleteTask, deleteAllTasks, setEmail }}>
+    <TaskContext.Provider value={{ tasks, getAllTasks, addTask, updateTask, deleteTask, deleteAllTasks, setEmail, isLoading }}>
       {children}
     </TaskContext.Provider>
   );

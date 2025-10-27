@@ -1,10 +1,10 @@
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
-import { useTheme } from "@/hooks/useTheme"
-import { useTasks } from "@/hooks/useData"
 import { createHomeStyles } from "@/assets/styles/home.styles"
-import { useState } from 'react'
-import { LinearGradient } from 'expo-linear-gradient'
+import { useTasks } from "@/hooks/useData"
+import { useTheme } from "@/hooks/useTheme"
 import { Ionicons } from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
+import { useState } from 'react'
+import { Alert, TextInput, TouchableOpacity, View } from 'react-native'
 
 const TaskInput = () => {
   const { colors } = useTheme()
@@ -39,7 +39,7 @@ const TaskInput = () => {
           <LinearGradient colors={!value.trim() ? colors.gradients.muted : colors.gradients.empty}
             style={[styles.addButton, !value.trim() && styles.addButtonDisabled]}
           >
-            <Ionicons name='add' size={24} color={(!value.trim() ? colors.textMuted : colors.primary)}></Ionicons>
+            <Ionicons name='add' size={24} color="#fff"></Ionicons>
           </LinearGradient>
         </TouchableOpacity>
       </View>
