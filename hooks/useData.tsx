@@ -1,18 +1,24 @@
 import { fetch } from 'expo/fetch';
 import React, { createContext, useContext, useState } from 'react';
 // Define the task type
-type Task = {
+export type Task = {
   _id: string;
   name: string;
   completed: boolean;
 };
+/**
+ *  * Creates a new type from T, where properties in K are optional.
+ *   */
+// type MakeOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+//
+// export type TaskUpdate = MakeOptional<Task, "completed" | "name">
 
 type TaskContextType = {
   tasks: Task[];
   getAllTasks: () => void;
-  addTask: (name: string, completed?: boolean) => void;
-  updateTask: (taskId: string, name?: string, completed?: boolean) => void;
-  deleteTask: (taskId: string) => void;
+  addTask: ({ name, completed }: { name: string, completed?: boolean }) => void;
+  updateTask: ({ name, completed, _id }: Task) => void;
+  deleteTask: ({ taskId }: { taskId: string }) => void;
   setEmail: (email: string) => void;
   isLoading: boolean
 };
@@ -44,7 +50,7 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
 
 
 
-  const addTask = (name: string, completed: boolean = false) => {
+  const addTask = ({ name, completed }: { name: string, completed?: boolean }) => {
     fetch(`https://task-manager-uizw.onrender.com/api/v1/users/tasks?email=${email}`, {
       method: 'POST',
       headers: {
@@ -59,22 +65,22 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       .catch(error => console.error("Add task error:", error));
   };
 
-  const updateTask = (taskId: string, name?: string, completed?: boolean) => {
+  const updateTask = ({ name, completed, _id }: Task) => {
     fetch(`https://task-manager-uizw.onrender.com/api/v1/users/tasks?email=${email}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ taskId, name, completed }),
+      body: JSON.stringify({ taskId: _id, name, completed }),
     })
       .then(response => response.json())
       .then(updatedTask => {
-        setTasks(prevData => prevData.map(task => task._id === taskId ? updatedTask : task));
+        setTasks(prevData => prevData.map(task => task._id === _id ? updatedTask : task));
       })
       .catch(error => console.error("Update task error:", error));
   };
 
-  const deleteTask = (taskId: string) => {
+  const deleteTask = ({ taskId }: { taskId: string }) => {
     fetch(`https://task-manager-uizw.onrender.com/api/v1/users/tasks/${taskId}?email=${email}`, {
       method: 'DELETE',
     })

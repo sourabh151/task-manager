@@ -14,7 +14,7 @@ const TaskInput = () => {
 
   const handleInputSubmit = () => {
     try {
-      addTask(value)
+      addTask({ name: value })
       setValue("")
 
     } catch (error) {
