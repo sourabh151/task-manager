@@ -1,5 +1,6 @@
 import { fetch } from 'expo/fetch';
 import React, { createContext, useContext, useState } from 'react';
+import { Alert } from 'react-native';
 // Define the task type
 export type Task = {
   _id: string;
@@ -20,7 +21,8 @@ type TaskContextType = {
   updateTask: ({ name, completed, _id }: Task) => void;
   deleteTask: ({ taskId }: { taskId: string }) => void;
   setEmail: (email: string) => void;
-  isLoading: boolean
+  isLoading: boolean,
+  setIsLoading: (isLoading: boolean) => void;
 };
 
 // Create the context
@@ -45,7 +47,12 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
         setTasks(data)
         setIsLoading(false)
       })
-      .catch((error) => console.error("Fetch error:", error));
+      .catch((error) => {
+        setIsLoading(false)
+        console.error("Fetch error:", error)
+        Alert.alert("Todos not fetched", "unable to fetch.please check your internet")
+      });
+
   }
 
 
@@ -62,7 +69,10 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       .then(newTask => {
         setTasks(prevData => [...prevData, newTask]);
       })
-      .catch(error => console.error("Add task error:", error));
+      .catch(error => {
+        console.error("Add task error:", error);
+        Alert.alert("Error", "Failed to add task.");
+      });
   };
 
   const updateTask = ({ name, completed, _id }: Task) => {
@@ -77,7 +87,10 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       .then(updatedTask => {
         setTasks(prevData => prevData.map(task => task._id === _id ? updatedTask : task));
       })
-      .catch(error => console.error("Update task error:", error));
+      .catch(error => {
+        console.error("Update task error:", error);
+        Alert.alert("Error", "Failed to update task.");
+      });
   };
 
   const deleteTask = ({ taskId }: { taskId: string }) => {
@@ -89,7 +102,10 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
           setTasks(prevData => prevData.filter(task => task._id !== taskId));
         }
       })
-      .catch(error => console.error("Delete task error:", error));
+      .catch(error => {
+        console.error("Delete task error:", error);
+        Alert.alert("Error", "Failed to delete task.");
+      });
   };
 
   const deleteAllTasks = () => {
@@ -101,11 +117,14 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
           setTasks([]);
         }
       })
-      .catch(error => console.error("Delete all tasks error:", error));
+      .catch(error => {
+        console.error("Delete all tasks error:", error);
+        Alert.alert("Error", "Failed to delete all tasks.");
+      });
   };
 
   return (
-    <TaskContext.Provider value={{ tasks, getAllTasks, addTask, updateTask, deleteTask, deleteAllTasks, setEmail, isLoading }}>
+    <TaskContext.Provider value={{ tasks, getAllTasks, addTask, updateTask, deleteTask, deleteAllTasks, setEmail, isLoading, setIsLoading }}>
       {children}
     </TaskContext.Provider>
   );
